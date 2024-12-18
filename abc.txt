@@ -1,0 +1,6 @@
+username :- tanviladva01
+pass :- tanvi@123
+string := ongodb+srv://tanviladva01:tanvi@123@to-do.m6aes.mongodb.net/
+
+// types of cloud
+// 
