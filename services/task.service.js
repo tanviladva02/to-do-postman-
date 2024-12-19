@@ -1,21 +1,24 @@
 const { Task } = require("../model/model.task");
 
-async function addTask(taskName, priority = 3, status = 1) {
-    try {
+
+async function addTask(taskName, priority = 3, status = 1 , userId,createdBy) {
+    try {     
         const newTask = new Task({
             task: taskName,
             priority,
             status,
             archived: false, // by default tasks are not archived
+            createdBy:userId
         });
         await newTask.save(); // Save to MongoDB
+        console.log("------",userId);
         return newTask;
     } catch (err) {
         throw new Error(`Task creation failed: ${err.message}`);
     }
 }
 
-async function getTasks({ status = null, archived = null, priority = null }) {
+async function getTasks({ status = null, archived = null, priority = null,updatedBy }) {
     try {
         const query = {};
 
@@ -40,21 +43,24 @@ async function getTasks({ status = null, archived = null, priority = null }) {
         }
 
         // Fetch tasks from MongoDB based on the query
-        const tasks = await Task.find(query);
+        const tasks = await Task.find(query)
+            .populate("createdBy", "username email pass") // Fetch user details for createdBy
+            .populate("updatedBy", "username email pass"); // Fetch user details for updatedBy
         return tasks;
     } catch (err) {
         throw new Error(`Failed to retrieve tasks: ${err.message}`);
     }
 }
 
-async function updateTask(id, { priority, status, archived }) {
+async function updateTask(id, { priority, status, archived, updatedBy }) {
     try {
-        const updates = {};
-        if (priority) updates.priority = priority;
-        if (status) updates.status = status;
-        if (archived !== undefined) updates.archived = archived;
+        const updated = {};
+        if (priority) updated.priority = priority;
+        if (status) updated.status = status;
+        if (archived !== undefined) updated.archived = archived;
+        if (updatedBy) updated.updatedBy = updatedBy;
 
-        const updatedTask = await Task.findByIdAndUpdate(id, updates, { new: true });
+        const updatedTask = await Task.findByIdAndUpdate(id, updated, { new: true });
         if (!updatedTask) {
             throw new Error("Task not found!");
         }
@@ -67,5 +73,5 @@ async function updateTask(id, { priority, status, archived }) {
 module.exports = {
     addTask,
     getTasks,
-    updateTask,
+    updateTask
 };
