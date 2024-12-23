@@ -1,24 +1,17 @@
-const express = require("express");
-const connectDB = require("./connection/db"); // Import the DB connection
-const taskRoutes = require("./routes/task.routes");  // Import task routes
-const userRoutes = require("./routes/user.routes");
-
+import express from "express";
+import connectDB from "./connection/db.js"; // Import the DB connection
+import taskRoutes from "./routes/task.routes.js"; // Import task routes
+import userRoutes from "./routes/user.routes.js"; // Import user routes
 const app = express();
-const port = 8100;
-
-app.use(express.json());  // Middleware to parse JSON request body
-
+const port = 8100; // Explicitly typing the port
+// Middleware for parsing JSON
+app.use(express.json());
 // Connect to MongoDB
 connectDB();
-
-// Use routes
-app.use("/tasks", taskRoutes);  // Use task routes
-app.use("/user", userRoutes);  // Use user routes correctly
-
+// Use routes for tasks and users
+app.use("/tasks", taskRoutes);
+app.use("/user", userRoutes);
+// Start the server
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });
-
-
-
- 

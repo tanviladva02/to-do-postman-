@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-
-const TaskSchema = new mongoose.Schema({
+// import mongoose from 'mongoose';
+import mongoose, { Schema } from "mongoose";
+const TaskSchema = new Schema({
     task: {
         type: String,
         required: true,
@@ -19,7 +19,7 @@ const TaskSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    createdBy:{
+    createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user", // Reference to the User model
         required: true,
@@ -27,24 +27,15 @@ const TaskSchema = new mongoose.Schema({
     updatedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user", // Reference to the User model
-      },
-}, { timestamps: true });  // Automatically adds `createdAt` and `updatedAt`);
-
-const Task = mongoose.model("Task", TaskSchema);
-
-const TaskPriority = {
+    },
+}, { timestamps: true }); // Automatically adds `createdAt` and `updatedAt`);
+export const TaskPriority = {
     HIGH: 1,
     MEDIUM: 2,
     LOW: 3,
 };
-
-const TaskStatus = {
+export const TaskStatus = {
     ONGOING: 1,
     DONE: 2,
 };
-
-module.exports = {
-    Task,
-    TaskPriority,
-    TaskStatus,
-};
+export const Task = mongoose.model("Task", TaskSchema);

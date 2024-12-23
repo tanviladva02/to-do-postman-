@@ -1,0 +1,1 @@
+{"root":["./index.ts","./connection/db.ts","./contoller/task.contoller.ts","./contoller/user.controller.ts","./model/model.task.ts","./model/model.user.ts","./routes/task.routes.ts","./routes/user.routes.ts","./services/task.service.ts","./services/user.service.ts"],"errors":true,"version":"5.7.2"}
